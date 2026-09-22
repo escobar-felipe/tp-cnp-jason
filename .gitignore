@@ -1,0 +1,39 @@
+# --- Gradle ---
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# --- Java ---
+*.class
+bin/
+out/
+
+# --- Jason ---
+# gerado pelo shadowJar a partir de cnp.mas2j
+default.mas2j
+# jars baixados/copiados localmente
+lib/
+# logs e saidas de execucao do MAS
+*.log
+log/
+
+# --- IDEs ---
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.vscode/
+
+# --- macOS ---
+.DS_Store
+
+# --- gerado pelas execucoes e pelos scripts ---
+# experimentos, testes e metricas: tudo se regenera com os scripts em scripts/
+results/
+experimento.mas2j
+
+# --- Python ---
+# ambiente local (matplotlib para os graficos)
+.venv/
+__pycache__/
