@@ -3,8 +3,8 @@ MAS cnp {
     environment: cnp.CnpEnv(2, 3, 2)
 
     agents:
-        initiator   [beliefs="tarefas(3)"] agentArchClass cnp.ContadorArch #2;
-        participant                        agentArchClass cnp.ContadorArch #2;
+        initiator   [beliefs="tarefas(3)"] #2;
+        participant                        #2;
 
     aslSourcePath: "src/agt";
 }

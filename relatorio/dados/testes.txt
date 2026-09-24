@@ -1,0 +1,6 @@
+[PASSOU] teste 1: Normal (2,2,1): 2 concluidas, vencedor = menor preco.
+[PASSOU] teste 2: Paralelo (2,2,3): 6 negociacoes, as 3 de cada initiator abertas antes da 1a terminar.
+[PASSOU] teste 3: Todos recusam (initiator pede servico_b): sem_proposta.
+[PASSOU] teste 4: Um participant nao responde (participant1 mudo): contrata o outro apos o prazo.
+[PASSOU] teste 5: Vencedor nao entrega (nenhum participant entrega): timeout_resultado.
+[PASSOU] teste 6: Grande (50,10,3): 150 estados finais, nenhum faltando nem duplicado.

@@ -1,0 +1,15 @@
+/*
+    Modelo usado por scripts/rodar.sh para gerar experimento.mas2j.
+    Os marcadores @...@ sao trocados pelo script. Nao rodar este arquivo direto.
+*/
+
+MAS cnp {
+
+    environment: cnp.CnpEnv(@N@, @I@, @M@)
+
+    agents:
+        initiator   [beliefs="@INI_CRENCAS@"] #@N@;
+        participant @PART_OPC@ #@M@;
+
+    aslSourcePath: "src/agt";
+}
