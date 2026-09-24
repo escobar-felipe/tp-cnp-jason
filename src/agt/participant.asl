@@ -15,9 +15,9 @@ caloteiro :- num(N) & nao_entrega(N).
 
 // ========================== Planos ==========================
 
-+!preco(fixa, P)      <- ?num(N); P = 1000 + 10*N.
-+!preco(agressiva, P) <- ?num(N); P = math.floor(0.85 * (1000 + 10*N)).
-+!preco(aleatoria, P) <- ?num(N); .random(R); P = 1000 + 10*N + math.floor(R*201).
++!preco(fixa, P)      <- P = 1000.
++!preco(agressiva, P) <- .random(R); P = 900 + math.floor(R*151).
++!preco(aleatoria, P) <- .random(R); P = 800 + math.floor(R*401).
 
 +cfp(Cid, S)[source(I)] : mudo.
 

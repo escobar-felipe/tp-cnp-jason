@@ -18,6 +18,7 @@ public class CnpEnv extends Environment {
     private int n, i, m, esperadas;
     private int finais = 0;
     private long primeiraAberta = -1, ultimoFinal = -1;
+    private long mensagens = 0;
     private final Map<String, Integer> contagem = new TreeMap<>();
     private PrintWriter eventos;
 
@@ -32,7 +33,7 @@ public class CnpEnv extends Environment {
         try {
             Files.createDirectories(Paths.get("results"));
             eventos = new PrintWriter(new FileWriter("results/eventos.csv"));
-            eventos.println("tempo_ms,agente,evento,cid,participante,preco");
+            eventos.println("tempo_ms,agente,evento,cid,participante,preco,mensagens");
         } catch (IOException e) {
             throw new RuntimeException("nao consegui criar results/eventos.csv", e);
         }
@@ -41,22 +42,25 @@ public class CnpEnv extends Environment {
 
     @Override
     public boolean executeAction(String ag, Structure action) {
-        if (!action.getFunctor().equals("registrar") || action.getArity() < 2) {
+        int aridade = action.getArity();
+        if (!action.getFunctor().equals("registrar") || (aridade != 2 && aridade != 3 && aridade != 5)) {
             logger.warning("acao desconhecida: " + action);
             return false;
         }
         String evento = action.getTerm(0).toString();
         String cid    = action.getTerm(1).toString();
-        String part   = action.getArity() > 2 ? action.getTerm(2).toString() : "";
-        String preco  = action.getArity() > 3 ? action.getTerm(3).toString() : "";
-        registrar(ag, evento, cid, part, preco);
+        String part   = aridade == 5 ? action.getTerm(2).toString() : "";
+        String preco  = aridade == 5 ? action.getTerm(3).toString() : "";
+        String msgs   = aridade > 2 ? action.getTerm(aridade - 1).toString() : "";
+        registrar(ag, evento, cid, part, preco, msgs);
         return true;
     }
 
-    private synchronized void registrar(String ag, String evento,
-                                       String cid, String part, String preco) {
+    private synchronized void registrar(String ag, String evento, String cid,
+                                       String part, String preco, String msgs) {
         long t = System.currentTimeMillis();
-        eventos.printf("%d,%s,%s,\"%s\",%s,%s%n", t, ag, evento, cid, part, preco);
+        eventos.printf("%d,%s,%s,\"%s\",%s,%s,%s%n", t, ag, evento, cid, part, preco, msgs);
+        if (!msgs.isEmpty()) mensagens += (long) Double.parseDouble(msgs);
 
         if (evento.equals("aberta") && primeiraAberta < 0) primeiraAberta = t;
 
@@ -70,7 +74,7 @@ public class CnpEnv extends Environment {
 
     private void encerrar() {
         eventos.close();
-        long msgs = ContadorArch.MENSAGENS.get();
+        long msgs = mensagens;
         try (PrintWriter r = new PrintWriter(new FileWriter("results/resumo.csv"))) {
             r.println("n,m,i,negociacoes,concluida,sem_proposta,falha,timeout_resultado,mensagens,tempo_total_ms");
             r.printf("%d,%s,%d,%d,%d,%d,%d,%d,%d,%d%n",
